@@ -13,9 +13,11 @@ import (
 
 var letter int
 var number int
+var symbol int
 
 var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 var numberRunes = []rune("0123456789")
+var symbolRunes = []rune("!@#_-")
 
 func RandLetters(num_letters int) string {
 	rand_rune := make([]rune, num_letters)
@@ -28,15 +30,24 @@ func RandLetters(num_letters int) string {
 func RandNumbers(num_numbers int) string {
 	rand_number := make([]rune, num_numbers)
 	for i := range rand_number {
-		rand_number[i] = numberRunes[rand.Intn(10)]
+		rand_number[i] = numberRunes[rand.Intn(len(numberRunes))]
 	}
 	return string(rand_number)
+}
+
+func RandSymbols(num_symbols int) string {
+	rand_symbol := make([]rune, num_symbols)
+	for i := range rand_symbol {
+		rand_symbol[i] = symbolRunes[rand.Intn(len(symbolRunes))]
+	}
+	return string(rand_symbol)
 }
 
 func GeneratePassword(c *cobra.Command, args []string) error {
 	rand_letter := RandLetters(letter)
 	rand_number := RandNumbers(number)
-	temp_rand_pass := rand_letter + rand_number
+	rand_symbol := RandSymbols(symbol)
+	temp_rand_pass := rand_letter + rand_number + rand_symbol
 
 	perm := rand.Perm(len(temp_rand_pass))
 	shuffledRunes := make([]rune, len(temp_rand_pass))
@@ -65,4 +76,5 @@ func Execute() {
 func init() {
 	rootCmd.Flags().IntVarP(&letter, "letters", "l", 0, "Include at least one letter in the password")
 	rootCmd.Flags().IntVarP(&number, "numbers", "n", 0, "Include at least one number in the password")
+	rootCmd.Flags().IntVarP(&symbol, "symbols", "s", 0, "Include at least one symbol in the password")
 }

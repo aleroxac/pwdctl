@@ -8,5 +8,5 @@ Command line tool to manage passwords.
 cd src && go build -o pwdctl
 
 ## run
-./pwdctl --number 10 --letter 10
+./pwdctl --number 10 --letter 10 --symbol 2
 ```
